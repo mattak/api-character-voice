@@ -1,0 +1,15 @@
+= form_for @program do |f|
+  - if @program.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@program.errors.count, "error")} prohibited this program from being saved:"
+      ul
+        - @program.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :title
+    = f.text_field :title
+  .field
+    = f.label :from
+    = f.date_select :from
+  .actions = f.submit 'Save'

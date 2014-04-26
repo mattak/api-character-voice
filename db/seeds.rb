@@ -5,3 +5,6 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+
+Program.create(title: '僕らはみんな河合荘', from: Date.new(2014, 4, 3))
+Program.create(title: '悪魔のリドル', from: Date.new(2014, 4, 3))

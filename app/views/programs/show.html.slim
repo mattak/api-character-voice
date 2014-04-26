@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Title:
+  = @program.title
+p
+  strong From:
+  = @program.from
+
+= link_to 'Edit', edit_program_path(@program)
+'|
+= link_to 'Back', programs_path
