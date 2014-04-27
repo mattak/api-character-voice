@@ -1,0 +1,18 @@
+= form_for @program_staff do |f|
+  - if @program_staff.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@program_staff.errors.count, "error")} prohibited this program_staff from being saved:"
+      ul
+        - @program_staff.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :staff_id
+    = f.number_field :staff_id
+  .field
+    = f.label :program_id
+    = f.number_field :program_id
+  .field
+    = f.label :role
+    = f.text_field :role
+  .actions = f.submit 'Save'

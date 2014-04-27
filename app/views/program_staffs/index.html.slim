@@ -1,0 +1,25 @@
+h1 Listing program_staffs
+
+table
+  thead
+    tr
+      th Staff
+      th Program
+      th Role
+      th
+      th
+      th
+
+  tbody
+    - @program_staffs.each do |program_staff|
+      tr
+        td = program_staff.staff_id
+        td = program_staff.program_id
+        td = program_staff.role
+        td = link_to 'Show', program_staff
+        td = link_to 'Edit', edit_program_staff_path(program_staff)
+        td = link_to 'Destroy', program_staff, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Program staff', new_program_staff_path

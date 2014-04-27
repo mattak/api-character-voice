@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  resources :program_staffs
+
   resources :staffs
 
   resources :characters

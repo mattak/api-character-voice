@@ -1,0 +1,15 @@
+p#notice = notice
+
+p
+  strong Staff:
+  = @program_staff.staff_id
+p
+  strong Program:
+  = @program_staff.program_id
+p
+  strong Role:
+  = @program_staff.role
+
+= link_to 'Edit', edit_program_staff_path(@program_staff)
+'|
+= link_to 'Back', program_staffs_path

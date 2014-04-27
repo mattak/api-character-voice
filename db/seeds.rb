@@ -27,3 +27,10 @@ Staff.create(name: '宮原るり',   role: '原作')
 Staff.create(name: '宮繁之',     role: '監督')
 Staff.create(name: '古怒田健志', role: '脚本')
 Staff.create(name: '栗田新一',   role: 'キャラクターデザイン')
+
+ProgramStaff.create(staff_id: 1, program_id: 1, role: '原作')
+ProgramStaff.create(staff_id: 2, program_id: 1, role: '監督')
+ProgramStaff.create(staff_id: 3, program_id: 1, role: '脚本')
+ProgramStaff.create(staff_id: 4, program_id: 1, role: 'キャラクターデザイン')
+
+
