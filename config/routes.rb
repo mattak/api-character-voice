@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
   resources :characters
 
+  resources :actors
+
   resources :programs
 
   # The priority is based upon order of creation: first created -> highest priority.

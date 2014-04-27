@@ -2,10 +2,8 @@
 
 one:
   name: MyString
-  program_id: 1
-  actor_id: 1
+  birth: 2014-04-27
 
 two:
   name: MyString
-  program_id: 1
-  actor_id: 1
+  birth: 2014-04-27

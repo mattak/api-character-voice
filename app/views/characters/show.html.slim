@@ -4,11 +4,11 @@ p
   strong Name:
   = @character.name
 p
-  strong Actor:
-  = @character.actor
-p
   strong Program:
   = @character.program_id
+p
+  strong Actor:
+  = @character.actor_id
 
 = link_to 'Edit', edit_character_path(@character)
 '|

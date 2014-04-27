@@ -9,9 +9,17 @@
 Program.create(title: '僕らはみんな河合荘', from: Date.new(2014, 4, 3))
 Program.create(title: '悪魔のリドル', from: Date.new(2014, 4, 3))
 
-Character.create(name: '宇佐和成', actor: '井口祐一', program_id: 1)
-Character.create(name: '河合律', actor: '花澤香菜', program_id: 1)
-Character.create(name: '城崎', actor: '四宮豪', program_id: 1)
-Character.create(name: '錦野麻弓', actor: '佐藤利奈', program_id: 1)
-Character.create(name: '渡辺彩花', actor: '金元寿子', program_id: 1)
-Character.create(name: '河合住子', actor: '小林沙苗', program_id: 1)
+Actor.create(name: '井口祐一', birth: Date.new(0,2,22))
+Actor.create(name: '花澤香菜', birth: Date.new(1989,2,25))
+Actor.create(name: '四宮豪', birth: Date.new(1975,6,6))
+Actor.create(name: '佐藤利奈', birth: Date.new(1981,5,2))
+Actor.create(name: '金元寿子', birth: Date.new(1987,12,16))
+Actor.create(name: '小林沙苗', birth: Date.new(1980,1,26))
+
+Character.create(name: '宇佐和成', actor_id: 1, program_id: 1)
+Character.create(name: '河合律',   actor_id: 2, program_id: 1)
+Character.create(name: '城崎',     actor_id: 3,  program_id: 1)
+Character.create(name: '錦野麻弓', actor_id: 4, program_id: 1)
+Character.create(name: '渡辺彩花', actor_id: 5, program_id: 1)
+Character.create(name: '河合住子', actor_id: 6, program_id: 1)
+
