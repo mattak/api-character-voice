@@ -23,3 +23,7 @@ Character.create(name: '錦野麻弓', actor_id: 4, program_id: 1)
 Character.create(name: '渡辺彩花', actor_id: 5, program_id: 1)
 Character.create(name: '河合住子', actor_id: 6, program_id: 1)
 
+Staff.create(name: '宮原るり',   role: '原作')
+Staff.create(name: '宮繁之',     role: '監督')
+Staff.create(name: '古怒田健志', role: '脚本')
+Staff.create(name: '栗田新一',   role: 'キャラクターデザイン')
