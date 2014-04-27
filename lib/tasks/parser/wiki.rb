@@ -65,13 +65,13 @@ class WikiParser
     result = parseLineH5(lines, index)
     return result if result != nil
   end
+
   def parseLineDL(lines, index)
     line = lines[index]
-    p line
     # ex "; 東 兎角（あずま とかく）"
     if /^;\s+(.+)\s*$/ =~ line
       character = $1
-      character = character.gsub(/\s+/,'').gsub(/[\(（].+[\)）]/, '')
+      character = character.gsub(/\s+/,'').gsub(/[\(（].+[\)）]/, '').gsub(/\[{2}([^\]]+\|)?([^\]]+)\]{2}/, '\2')
       if index < lines.size
         # ex ": 声 - [[花澤香菜]]<ref character="ours201403" />"
         if lines[index+1] =~ /^\s*:.+\[{2}([^\]]+)\]{2}/
