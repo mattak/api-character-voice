@@ -42,7 +42,12 @@ gem 'spring',        group: :development
 # slim
 gem 'slim-rails'
 
+# nokogiri
+gem 'nokogiri'
+
 group :test do
   gem 'rspec'
   gem 'rspec-rails'
 end
+
+
