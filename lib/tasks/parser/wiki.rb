@@ -1,3 +1,4 @@
+# -*- encoding: utf-8 -*-
 require 'nokogiri'
 require 'json'
 
@@ -35,7 +36,7 @@ class WikiParser
     start = false
     lines = content.split(/\n/)
     lines.each_with_index do |line, index|
-      if /^(={2,5})\s+登場人物\s+={2,5}/ =~ line
+      if /^(={2,5})\s*(登場人物|登場キャラクター|主なキャラクター)\s*={2,5}/ =~ line
         level = $1.length
         p "-----START------ #{start}"
         start = true
@@ -52,6 +53,7 @@ class WikiParser
       if start == true
         character_actor = parseLine(lines,index)
         result.push(character_actor) if character_actor != nil
+        next
       end
     end
 
@@ -69,13 +71,17 @@ class WikiParser
   def parseLineDL(lines, index)
     line = lines[index]
     # ex "; 東 兎角（あずま とかく）"
-    if /^;\s+(.+)\s*$/ =~ line
+    # ex "; 河合 住子（かわい すみこ）<ref group="注">アニメ1話より。原作での姓は表記されず。</ref>"
+    if /^;\s*(.+)\s*$/ =~ line
       character = $1
-      character = character.gsub(/\s+/,'').gsub(/[\(（].+[\)）]/, '').gsub(/\[{2}([^\]]+\|)?([^\]]+)\]{2}/, '\2')
+      character = character \
+        .gsub(/\s+/,'') \
+        .gsub(/[\(（][^\)）]+[\)）].*/, '') \
+        .gsub(/\[{2}([^\]]+\|)?([^\]]+)\]{2}/, '\2')
       if index < lines.size
         # ex ": 声 - [[花澤香菜]]<ref character="ours201403" />"
-        if lines[index+1] =~ /^\s*:.+\[{2}([^\]]+)\]{2}/
-          actor = $1.gsub(/\s+/,'')
+        if lines[index+1] =~ /^\s*:\s*声\s+\-\s+\[{2}([^\]]+\|)?([^\]]+)\]{2}/
+          actor = $2.gsub(/\s+/,'')
           puts "#{character} -- #{actor}"
           return {character: character, actor: actor}
         end

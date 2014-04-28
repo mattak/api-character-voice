@@ -73,5 +73,82 @@ describe WikiParser do
     expect(result.include?({:character=>"矢澤にこ", :actor=>"徳井青空"})).to be_true
     expect(result.include?({:character=>"西木野真姫", :actor=>"Pile"})).to be_true
   end
+
+  example "should parse 登場キャラクター" do
+    content = <<-__CONTENT__
+== 登場人物 ==
+=== イマドキ妖怪 ===
+; だるだるくつした
+: 声 - [[疋田由香里]]
+: くつしたを引っ張りだるだるにする妖怪。
+; カタムシビ姉妹
+: 声 - [[山口繭]]（姉）、[[日比愛子]]（妹）
+: 紐を固結びするのが大好きな姉妹の妖怪。自分達が結んだ紐を目の前で解かれるととてもつらい。
+; 丸尾ミカ子
+: 声 - [[金井美樹 (1996年生)|金井美樹]]
+
+== 著作 ==
+    __CONTENT__
+
+    result = WikiParser.new(content).parse().result
+    expect(result.size).to eq(3)
+    expect(result.include?({:character=>"だるだるくつした", :actor=>"疋田由香里"})).to be_true
+    expect(result.include?({:character=>"カタムシビ姉妹", :actor=>"山口繭"})).to be_true
+    expect(result.include?({:character=>"丸尾ミカ子", :actor=>"金井美樹"})).to be_true
+  end
+
+  example "should ignore ref" do
+    content = <<-__CONTENT__
+== 登場人物 ==
+; 渡辺 彩花（わたなべ さやか）
+: 声 - [[金元寿子]]<ref name="ours201403"/>
+; 河合 住子（かわい すみこ）<ref group="注">アニメ1話より。原作での姓は表記されず。</ref>
+: 声 - [[小林沙苗]]<ref name="ours201403"/>
+    __CONTENT__
+
+    result = WikiParser.new(content).parse().result
+    expect(result.size).to eq(2)
+    expect(result.include?({:character=>"渡辺彩花", :actor=>"金元寿子"})).to be_true
+    expect(result.include?({:character=>"河合住子", :actor=>"小林沙苗"})).to be_true
+  end
+
+  example "should parse title with no space" do
+    content = <<-__CONTENT__
+==登場キャラクター==
+{{節スタブ}}
+
+===ジュエルペット===
+本作ではジュエルパレスに集められたレディジュエル候補生たちのパートナーとして登場する。
+; ルビー
+: [[声|声]] - [[齋藤彩夏]]
+; ルーア
+: 声 - [[井口裕香]]
+; レディ・ジュエル
+: 声 - 平野綾
+    __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size()).to eq(1)
+    expect(result.include?({character: 'ルーア', actor: '井口裕香'})).to be_true
+  end
+
+  example "should parse 主なキャラクター1" do
+    content = <<-__CONTENT__
+== 主なキャラクター ==
+*このメンバー4人がプチキャラとして登場する。
+;春音あいら
+:声 - [[阿澄佳奈]]
+:プリティーリズム・オーロラドリームの主人公。
+;上葉みあ
+:声 - [[大久保瑠美]]
+:プリティーリズム・ディアマイフューチャーの主人公。
+== スタッフ ==
+    __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size).to eq(2)
+    expect(result.include?({character: '春音あいら', actor: '阿澄佳奈'})).to be_true
+    expect(result.include?({character: '上葉みあ', actor: '大久保瑠美'})).to be_true
+  end
 end
 
