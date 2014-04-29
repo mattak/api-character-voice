@@ -67,6 +67,7 @@ class WikiParser
     # pre-processing
     line = removeRefs(line)
     line = removeParenthesis(line)
+    line = removeComment(line)
 
     # : 声 - [[平野綾]]
     # :: 声 - [[平野綾]]
@@ -99,6 +100,7 @@ class WikiParser
     # pre-processing
     line = removeRefs(line)
     line = removeParenthesis(line)
+    line = removeComment(line)
     line = removeSquareBracket(line)
 
     character = nil
@@ -141,5 +143,9 @@ class WikiParser
     arrays.collect do |e|
       removeSpace(e)
     end
+  end
+
+  def removeComment(line)
+    line.gsub(/<\!\-\-\s*[^>]*\s*\-\->/, '')
   end
 end

@@ -232,5 +232,16 @@ describe WikiParser do
     expect(result[14]).to eq({character: 'ヴァニラ・アイス', actor: '青野武'})
     expect(result[15]).to eq({character: 'ヴァニラ・アイス', actor: '吉野裕行'})
   end
+
+  it "should ignore comment" do
+    content = <<-__CONTENT__
+; 英雄崎凜（えいゆうざき りん）<!-- りんの字は『凜』（示ではなく禾）です -->
+: 声 - [[日笠陽子]]
+    __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size).to eq(1)
+    expect(result[0]).to eq({character: '英雄崎凜', actor: '日笠陽子'})
+  end
 end
 
