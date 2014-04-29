@@ -19,8 +19,8 @@ describe WikiParser do
     wiki = WikiParser.new(content)
     result = wiki.parse().result
     expect(result.size).to eq(2)
-    expect(result.include?({:character=>"竜神翔悟", :actor=>"KENN"})).to be_true
-    expect(result.include?({:character=>"ダークスパイダー", :actor=>"楠大典"})).to be_true
+    expect(result[0]).to eq({:character=>"竜神翔悟", :actor=>"KENN"})
+    expect(result[1]).to eq({:character=>"ダークスパイダー", :actor=>"楠大典"})
   end
 
   example 'should be parse h5 content' do
@@ -37,9 +37,10 @@ describe WikiParser do
 
     result = WikiParser.new(content).parse().result
     expect(result.size).to eq(3)
-    expect(result.include?({:character=>"絢瀬亜里沙", :actor=>"佐倉綾音"})).to be_true
-    expect(result.include?({:character=>"矢澤にこ", :actor=>"徳井青空"})).to be_true
-    expect(result.include?({:character=>"西木野真姫", :actor=>"Pile"})).to be_true
+
+    expect(result[0]).to eq({:character=>"西木野真姫", :actor=>"Pile"})
+    expect(result[1]).to eq({:character=>"矢澤にこ", :actor=>"徳井青空"})
+    expect(result[2]).to eq({:character=>"絢瀬亜里沙", :actor=>"佐倉綾音"})
   end
 
   it "should parse multiple actor" do
@@ -116,11 +117,20 @@ describe WikiParser do
     content = <<-__CONTENT__
 ; オーブラ 
 : 声 - 下山吉光<ref>{{Cite web|publisher=あにてれ：FAIRY TAIL|url=http://www.tv-tokyo.co.jp/anime/fairytail/chara/enbu/ert/index.html|title=キャラクター 大鴉の尻尾（レイヴンテイル）|accessdate=2013-06-07}}</ref>
+; ロキ<ref>アニメではレオとして登場する場合、エンディングクレジットも「レオ」表記になる。</ref>
+: 声 - [[岸尾だいすけ]]
+; ミラジェーン・ストラウス<ref name="comic30">単行本30巻より。</ref>
+: 声 - [[小野涼子]]
+; エルフマン・ストラウス<ref name="comic30"/>
+: 声 - [[安元洋貴]]
     __CONTENT__
 
     result = WikiParser.new(content).parse.result
-    expect(result.size).to eq(1)
+    expect(result.size).to eq(4)
     expect(result[0]).to eq({character: 'オーブラ', actor: '下山吉光'})
+    expect(result[1]).to eq({character: 'ロキ', actor: '岸尾だいすけ'})
+    expect(result[2]).to eq({character: 'ミラジェーン・ストラウス', actor: '小野涼子'})
+    expect(result[3]).to eq({character: 'エルフマン・ストラウス', actor: '安元洋貴'})
   end
 
   it "can parse quated actor and ignore unquated" do

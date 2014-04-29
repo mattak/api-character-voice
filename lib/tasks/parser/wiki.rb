@@ -43,48 +43,16 @@ class WikiParser
     lines = content.split(/\n/)
 
     lines.each_with_index do |line, index|
-      # : [[声優|声]] - [[柿原徹也]]、[[MAKO]]（少年時代）
-      # : 声 - [[平野綾]]
-      # :: 声 - [[平野綾]]
-      actor_candinates_raw = nil
-      if lines[index] =~ /^[\s:]{1,}\s*声\s*\-\s*(.+)/
-        actor_candinates_raw = $1
-      elsif lines[index] =~ /^[\s:]{1,}\s*\[{2}[^\|\]]*\|?声\]{2}\s*\-\s*(.+)/
-        actor_candinates_raw = $1
-      else
-        next
-      end
+      # parse actor
+      actors = parseActors(line)
 
-      # [[柿原徹也]]、[[MAKO]]（少年時代）
-      actor_candinates = []
-      if actor_candinates_raw !~ /\[{2}[^\]]+\]{2}/
-        actor_candinates_raw.gsub!(/[\(（][^）\)]+[\)）]/, '')
-        actor_candinates = actor_candinates_raw.split(/[\/、]/)
-      else
-        actor_candinates_raw.gsub(/\[{2}([^\|\]]*\|)?([^\]]+)\]{2}/) do |matched|
-          actor_candinates.push($2)
-        end
-      end
+      # parse character
+      if actors.size() > 0 && index > 0
+        character = parseCharacter(lines[index-1])
 
-      # finalize
-      actor_candinates = actor_candinates.collect do |actor|
-        actor.gsub(/[\s　]+/,'')
-      end
-
-      if actor_candinates.size() > 0 && index > 0
-        p actor_candinates
-        character = nil
-        # :; ヒビキ・レイティス
-        if lines[index-1] =~ /^[:\s]{0,};\s*(.+)/
-          character = $1
-        elsif lines[index-1] =~ /^\={2,6}\s*([^\=]+)\s*\={2,6}/
-          character = $1
-        end
-
-        if character != nil
-          character.gsub!(/[\(（][^）\)]+[\)）]/, '')
-          character.gsub!(/[\s　]+/, '')
-          actor_candinates.each do |actor|
+        # join
+        if actors.size() > 0 && character != nil
+          actors.each do |actor|
             result.push({character: character, actor: actor})
           end
         end
@@ -95,52 +63,83 @@ class WikiParser
     return self
   end
 
-  def parseLine(lines, index)
-    result = parseLineDL(lines, index)
-    return result if result != nil
-    result = parseLineH5(lines, index)
-    return result if result != nil
-  end
+  def parseActors(line)
+    # pre-processing
+    line = removeRefs(line)
+    line = removeParenthesis(line)
 
-  def parseLineDL(lines, index)
-    line = lines[index]
-    # ex "; 東 兎角（あずま とかく）"
-    # ex "; 河合 住子（かわい すみこ）<ref group="注">アニメ1話より。原作での姓は表記されず。</ref>"
-    if /^;\s*(.+)\s*$/ =~ line
-      character = $1
-      character = character \
-        .gsub(/\s+/,'') \
-        .gsub(/[\(（][^\)）]+[\)）].*/, '') \
-        .gsub(/\[{2}([^\]]+\|)?([^\]]+)\]{2}/, '\2')
-      if index < lines.size
-        # ex ": 声 - [[花澤香菜]]<ref character="ours201403" />"
-        if lines[index+1] =~ /^\s*:\s*声\s+\-\s+\[{2}([^\]]+\|)?([^\]]+)\]{2}/
-          actor = $2.gsub(/\s+/,'')
-          puts "#{character} -- #{actor}"
-          return {character: character, actor: actor}
-        end
+    # : 声 - [[平野綾]]
+    # :: 声 - [[平野綾]]
+    # : [[声優|声]] - [[柿原徹也]]、[[MAKO]]
+    actors_raw = nil
+    if line =~ /^[\s:]{1,}\s*声\s*\-\s*(.+)/
+      actors_raw = $1
+    elsif line =~ /^[\s:]{1,}\s*\[{2}[^\|\]]*\|?声\]{2}\s*\-\s*(.+)/
+      actors_raw = $1
+    else
+      return []
+    end
+
+    # [[柿原徹也]]、[[MAKO]]
+    actors = []
+    if actors_raw !~ /\[{2}[^\]]+\]{2}/
+      actors = actors_raw.split(/[\/、]/)
+    else
+      actors_raw.gsub(/\[{2}([^\|\]]*\|)?([^\]]+)\]{2}/) do |matched|
+        actors.push($2)
       end
     end
 
-    return nil
+    # post-processing
+    actors = removeSpaces(actors)
+    return actors
   end
 
-  def parseLineH5(lines, index)
-    line = lines[index]
-    # ex "===== 矢澤 にこ（やざわ にこ） ====="
-    if /^={5}\s+(.+)\s*={5}$/ =~ line
+  def parseCharacter(line)
+    # pre-processing
+    line = removeRefs(line)
+    line = removeParenthesis(line)
+    line = removeSquareBracket(line)
+
+    character = nil
+    # :; ヒビキ・レイティス
+    if line =~ /^[:\s]{0,};\s*(.+)/
       character = $1
-      character = character.gsub(/\s+/,'').gsub(/[\(（].+[\)）]/, '')
-      if index < lines.size
-        # ": 声 - [[徳井青空]]"
-        if lines[index+1] =~ /^\s*:.+\[{2}([^\]]+)\]{2}/
-          actor = $1.gsub(/\s+/,'')
-          puts "#{character} -- #{actor}"
-          return {character: character, actor: actor}
-        end
-      end
+    elsif line =~ /^\={2,6}\s*([^\=]+)\s*\={2,6}/
+      character = $1
     end
 
-    return nil
+    # post-processing
+    if character != nil
+      character = removeSpace(character)
+    end
+
+    return character
+  end
+
+  def removeRefs(line)
+    # remove <ref />
+    line = line.gsub(/<[^>]+\/>/, '')
+    # remove <ref >...</ref>
+    line = line.gsub(/<[^>]+>[^<]*<\/[^>]*>/, '')
+  end
+
+  def removeParenthesis(line)
+    # remove (...)
+    line = line.gsub(/[\(（][^）\)]*[\)）]/, '')
+  end
+
+  def removeSquareBracket(line)
+    line = line.gsub(/\[{2}([^\|\]]*\|)?([^\]]+)\]{2}/, '\2')
+  end
+
+  def removeSpace(e)
+    e.gsub(/[\s　]+/, '')
+  end
+
+  def removeSpaces(arrays)
+    arrays.collect do |e|
+      removeSpace(e)
+    end
   end
 end
