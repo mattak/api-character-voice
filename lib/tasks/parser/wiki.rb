@@ -30,30 +30,64 @@ class WikiParser
     return WikiParser.new(content)
   end
 
+  def toJson(pretty=false)
+    if pretty
+      return JSON.pretty_generate(@result)
+    else
+      return JSON.generate(@result)
+    end
+  end
+
   def parse()
     result = []
-    level = nil
-    start = false
     lines = content.split(/\n/)
+
     lines.each_with_index do |line, index|
-      if /^(={2,5})\s*(登場人物|登場キャラクター|主なキャラクター)\s*={2,5}/ =~ line
-        level = $1.length
-        p "-----START------ #{start}"
-        start = true
+      # : [[声優|声]] - [[柿原徹也]]、[[MAKO]]（少年時代）
+      # : 声 - [[平野綾]]
+      # :: 声 - [[平野綾]]
+      actor_candinates_raw = nil
+      if lines[index] =~ /^[\s:]{1,}\s*声\s*\-\s*(.+)/
+        actor_candinates_raw = $1
+      elsif lines[index] =~ /^[\s:]{1,}\s*\[{2}[^\|\]]*\|?声\]{2}\s*\-\s*(.+)/
+        actor_candinates_raw = $1
+      else
         next
-      elsif level != nil && /^(={2,5})\s+[^=]+\s+={2,5}/ =~ line
-        level_end = $1.length
-        if start == true && level == level_end
-          p "-----END------ #{start}"
-          start = false
-          next
+      end
+
+      # [[柿原徹也]]、[[MAKO]]（少年時代）
+      actor_candinates = []
+      if actor_candinates_raw !~ /\[{2}[^\]]+\]{2}/
+        actor_candinates_raw.gsub!(/[\(（][^）\)]+[\)）]/, '')
+        actor_candinates = actor_candinates_raw.split(/[\/、]/)
+      else
+        actor_candinates_raw.gsub(/\[{2}([^\|\]]*\|)?([^\]]+)\]{2}/) do |matched|
+          actor_candinates.push($2)
         end
       end
 
-      if start == true
-        character_actor = parseLine(lines,index)
-        result.push(character_actor) if character_actor != nil
-        next
+      # finalize
+      actor_candinates = actor_candinates.collect do |actor|
+        actor.gsub(/[\s　]+/,'')
+      end
+
+      if actor_candinates.size() > 0 && index > 0
+        p actor_candinates
+        character = nil
+        # :; ヒビキ・レイティス
+        if lines[index-1] =~ /^[:\s]{0,};\s*(.+)/
+          character = $1
+        elsif lines[index-1] =~ /^\={2,6}\s*([^\=]+)\s*\={2,6}/
+          character = $1
+        end
+
+        if character != nil
+          character.gsub!(/[\(（][^）\)]+[\)）]/, '')
+          character.gsub!(/[\s　]+/, '')
+          actor_candinates.each do |actor|
+            result.push({character: character, actor: actor})
+          end
+        end
       end
     end
 
@@ -108,13 +142,5 @@ class WikiParser
     end
 
     return nil
-  end
-
-  def toJson(pretty=false)
-    if pretty
-      return JSON.pretty_generate(@result)
-    else
-      return JSON.generate(@result)
-    end
   end
 end

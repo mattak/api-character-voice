@@ -29,5 +29,7 @@ else
 end
 
 wiki = WikiParser.fromUrl(url)
-puts wiki.content
-puts wiki.parse().toJson(true)
+wiki.parse()
+puts wiki.toJson(true)
+puts wiki.result.length()
+
