@@ -198,7 +198,7 @@ describe WikiParser do
   end
 
   it "can parse jojo character" do
-    pending("not implement")
+    # pending("not implement")
     content = <<-__CONTENT__
 ; [[空条承太郎|空条 承太郎]]（くうじょう じょうたろう）
 : 声 - [[梁田清之]] / [[小杉十郎太]] / 梁田清之 / [[小野大輔]] / 同左（小学生時代 - [[高森奈津美]]）
@@ -211,6 +211,26 @@ describe WikiParser do
 ; ヴァニラ・アイス
 : 声 - なし / [[青野武]] / 岸祐二（第1作）、速水奨（第2作<ref group="注">ただし一部の技を使用したときのみ岸祐二の声になる。</ref>） / [[吉野裕行]]
     __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size).to eq(16)
+    expect(result[0]).to eq({character: '空条承太郎', actor: '梁田清之'})
+    expect(result[1]).to eq({character: '空条承太郎', actor: '小杉十郎太'})
+    expect(result[2]).to eq({character: '空条承太郎', actor: '小野大輔'})
+    # expect(result[3]).to eq({character: '空条承太郎', actor: '高森奈津美'})
+    expect(result[3]).to eq({character: 'ジョセフ・ジョースター', actor: '内海賢二'})
+    expect(result[4]).to eq({character: 'ジョセフ・ジョースター', actor: '納谷悟朗'})
+    expect(result[5]).to eq({character: 'ジョセフ・ジョースター', actor: '大塚周夫'})
+    expect(result[6]).to eq({character: 'ジョセフ・ジョースター', actor: '大川透'})
+    expect(result[7]).to eq({character: 'ジョセフ・ジョースター', actor: '杉田智和'})
+    expect(result[8]).to eq({character: 'ジョセフ・ジョースター', actor: '石塚運昇'})
+    expect(result[9]).to eq({character: 'イギー', actor: '千葉繁'})
+    expect(result[10]).to eq({character: 'エンヤ婆', actor: '深見梨加'})
+    expect(result[11]).to eq({character: 'エンヤ婆', actor: '高木早苗'})
+    expect(result[12]).to eq({character: 'エンヤ婆', actor: '三輪勝恵'})
+    expect(result[13]).to eq({character: 'エンヤ婆', actor: '鈴木れい子'})
+    expect(result[14]).to eq({character: 'ヴァニラ・アイス', actor: '青野武'})
+    expect(result[15]).to eq({character: 'ヴァニラ・アイス', actor: '吉野裕行'})
   end
 end
 
