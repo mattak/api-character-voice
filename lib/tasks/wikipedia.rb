@@ -22,7 +22,10 @@ usage: wikipedia.rb <query_string>
 end
 
 if ARGV.size > 0
-  url = "http://ja.wikipedia.org/w/api.php?action=query&export&format=json&titles=#{ URI.escape(ARGV[0]) }"
+  title = URI.escape(ARGV[0])
+  # XXX: is there any good module to escape '&'?
+  title = title.gsub('&', '%26')
+  url = "http://ja.wikipedia.org/w/api.php?action=query&export&format=json&titles=#{ title }"
   p url
 else
   usage()
