@@ -243,5 +243,18 @@ describe WikiParser do
     expect(result.size).to eq(1)
     expect(result[0]).to eq({character: '英雄崎凜', actor: '日笠陽子'})
   end
-end
 
+  it "should not be null when character name is ..." do
+    content = <<-__CONTENT__
+; <span id="黒須 参差">黒須 参差（くろす さんさ）</span>
+: 声 - [[櫻井浩美]] 
+; <span id="吉野 咲希">吉野 咲希（よしの さき）</span>
+: 声 - [[久野美咲]] 
+    __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size).to eq(2)
+    expect(result[0]).to eq({character: '黒須参差', actor: '櫻井浩美'})
+    expect(result[1]).to eq({character: '吉野咲希', actor: '久野美咲'})
+  end
+end

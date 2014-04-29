@@ -65,6 +65,7 @@ class WikiParser
 
   def parseActors(line)
     # pre-processing
+    line = removeSpan(line)
     line = removeRefs(line)
     line = removeParenthesis(line)
     line = removeComment(line)
@@ -98,6 +99,7 @@ class WikiParser
 
   def parseCharacter(line)
     # pre-processing
+    line = removeSpan(line)
     line = removeRefs(line)
     line = removeParenthesis(line)
     line = removeComment(line)
@@ -124,6 +126,10 @@ class WikiParser
     line = line.gsub(/<[^>]+\/>/, '')
     # remove <ref >...</ref>
     line = line.gsub(/<[^>]+>[^<]*<\/[^>]*>/, '')
+  end
+
+  def removeSpan(line)
+    line = line.gsub(/<span[^>]*>([^<]*)<\/span[^>]*>/, '\1')
   end
 
   def removeParenthesis(line)
