@@ -197,6 +197,13 @@ describe WikiParser do
     __CONTENT__
   end
 
+  it "may ignore actor which described in character line" do
+    pending("not implement")
+    content = <<-__CONTENT__
+;ダヤン（声優：[[篠倉伸子]]／[[島本須美]]）
+    __CONTENT__
+  end
+
   it "can parse jojo character" do
     # pending("not implement")
     content = <<-__CONTENT__
@@ -256,5 +263,19 @@ describe WikiParser do
     expect(result.size).to eq(2)
     expect(result[0]).to eq({character: '黒須参差', actor: '櫻井浩美'})
     expect(result[1]).to eq({character: '吉野咲希', actor: '久野美咲'})
+  end
+
+  it "should remove visible anchor" do
+    content = <<-__CONTENT__
+; {{Visible anchor|バナージ・リンクス}}
+: [[声優|声]] - [[内山昂輝]] 
+; {{Visible anchor|リディ・マーセナス}}
+: 声 - [[浪川大輔]]
+    __CONTENT__
+
+    result = WikiParser.new(content).parse.result
+    expect(result.size).to eq(2)
+    expect(result[0]).to eq({character: 'バナージ・リンクス', actor: '内山昂輝'})
+    expect(result[1]).to eq({character: 'リディ・マーセナス', actor: '浪川大輔'})
   end
 end
