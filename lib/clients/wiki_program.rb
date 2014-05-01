@@ -7,6 +7,17 @@ require 'clients/wiki/parser.rb'
 
 module Clients
   class WikiProgram
+
+    def self.getwrite_by_stdin()
+      STDIN.each do |line|
+        line.chomp!
+        next if /^\#/ =~ line
+
+        puts line
+        self.getwrite(line)
+      end
+    end
+
     def self.getwrite_by_list(listfile)
 
       File.open(listfile).each do |line|
@@ -57,8 +68,18 @@ module Clients
       return json_str
     end
 
+    def self.parse_list_by_stdin()
+      STDIN.each do |line|
+        next if /^#/ =~ line
+        line.chomp!
+        puts line
+
+        self.parse(line)
+      end
+    end
+
     def self.parse(filename)
-      wiki = Client::Wiki::Parser.fromFile(filename)
+      wiki = Clients::Wiki::Parser.fromFile(filename)
       wiki.parse()
 
       raise "result not found" if wiki.result == nil
