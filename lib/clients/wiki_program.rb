@@ -2,11 +2,45 @@
 
 require 'open-uri'
 require 'uri'
+require 'fileutils'
 require 'clients/wiki/parser.rb'
 
 module Clients
   class WikiProgram
+    def self.getwrite_by_list(listfile)
+
+      File.open(listfile).each do |line|
+        line.chomp!
+
+        next if /^\#/ =~ line
+
+        puts line
+        self.getwrite(line)
+      end
+    end
+
+    FILE_DIR = 'tmp/clients/wiki/'
+
+    def self.getwrite(title)
+      FileUtils.mkdir_p FILE_DIR
+      result = self._get(title)
+
+      wiki = Clients::Wiki::Parser.fromJson(result, 'utf-8')
+      savepath = FILE_DIR + URI.escape(wiki.title)
+
+      puts savepath
+
+      File.open(savepath, "w") do |fo|
+        fo.write result
+      end
+    end
+
     def self.get(title)
+      result = self._get(title)
+      puts result
+    end
+
+    def self._get(title)
       # title -> url
       title_escape = URI.escape(title)
       # XXX: is there any good module to escape '&'?
@@ -20,7 +54,7 @@ module Clients
       end
 
       # puts
-      puts json_str
+      return json_str
     end
 
     def self.parse(filename)
