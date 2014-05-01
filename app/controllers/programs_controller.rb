@@ -21,6 +21,8 @@ class ProgramsController < ApplicationController
   def edit
   end
 
+  skip_before_filter :verify_authenticity_token ,:only=>[:create]
+
   # POST /programs
   # POST /programs.json
   def create

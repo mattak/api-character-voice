@@ -43,6 +43,8 @@ ActiveRecord::Schema.define(version: 20140427033049) do
     t.datetime "updated_at"
   end
 
+  add_index "programs", ["title"], name: "index_programs_on_title", unique: true, using: :btree
+
   create_table "staffs", force: true do |t|
     t.string   "name"
     t.string   "role"
