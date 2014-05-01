@@ -66,4 +66,5 @@ Rails.application.routes.draw do
 
   root 'root#index'
 
+  get "search/actor/:word" => "search#actor"
 end
