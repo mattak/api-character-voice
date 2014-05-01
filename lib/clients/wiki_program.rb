@@ -5,7 +5,7 @@ require 'uri'
 require 'clients/wiki/parser.rb'
 
 module Clients
-  class Wiki::Program
+  class WikiProgram
     def self.get(title)
       # title -> url
       title_escape = URI.escape(title)
@@ -24,7 +24,7 @@ module Clients
     end
 
     def self.parse(filename)
-      wiki = Wiki::Parser.fromFile(filename)
+      wiki = Client::Wiki::Parser.fromFile(filename)
       wiki.parse()
 
       raise "result not found" if wiki.result == nil

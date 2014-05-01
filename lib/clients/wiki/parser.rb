@@ -3,6 +3,9 @@ require 'nokogiri'
 require 'json'
 
 module Clients
+  class Wiki
+  end
+
   class Wiki::Parser
     attr_accessor :content, :result, :title
 
@@ -35,7 +38,7 @@ module Clients
       doc = Nokogiri::HTML.parse(xml, nil, charset)
       title   = doc.xpath('//page/title').text
       content = doc.xpath('//revision/text').text
-      return WikiParser.new(content, title)
+      return Wiki::Parser.new(content, title)
     end
 
     def toJson(pretty=false)
