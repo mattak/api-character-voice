@@ -1,6 +1,7 @@
 class SearchController < ApplicationController
   def actor
-    @actors = [Actor.find_by(name: params[:word])]
+    actors = [Actor.where('name like ?', "%#{params[:word]}%")]
+    @actors = (actors != nil) ? [actors.first] : []
   end
 
   def program
