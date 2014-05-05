@@ -1,3 +1,20 @@
-h2 Hello world
-p
-    The time is now: #{ Time.now }
+div class="container"
+  h1 class="center" Character Voice API?
+  p 声優の演じたキャラクター, 出演したアニメ検索できるAPIです.
+  p APIは現在αステータスです. APIやデータは大幅に改変される可能性があります.
+
+  h2 Stats
+  div
+    table class="table table-hover"
+      tr
+        th Type
+        th #
+      tr
+        td アニメ
+        td #{@program_count}
+      tr
+        td キャラクター
+        td #{@character_count}
+      tr
+        td 声優
+        td #{@actor_count}

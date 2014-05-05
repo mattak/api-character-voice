@@ -1,23 +1,22 @@
-h1 Listing actors
-
-table
-  thead
-    tr
-      th Name
-      th Birth
-      th
-      th
-      th
-
-  tbody
-    - @actors.each do |actor|
+div class="container"
+  h1 Listing actors
+  table class="table"
+    thead
       tr
-        td = actor.name
-        td = actor.birth
-        td = link_to 'Show', actor
-        td = link_to 'Edit', edit_actor_path(actor)
-        td = link_to 'Destroy', actor, data: {:confirm => 'Are you sure?'}, :method => :delete
+        th Name
+        th Birth
+        th
+        th
+        th
 
-br
+    tbody
+      - @actors.each do |actor|
+        tr
+          td = actor.name
+          td = actor.birth
+          td = link_to 'Show', actor
+          td = link_to 'Edit', edit_actor_path(actor)
+          td = link_to 'Destroy', actor, data: {:confirm => 'Are you sure?'}, :method => :delete
 
-= link_to 'New Actor', new_actor_path
+  br
+  = link_to 'New Actor', new_actor_path

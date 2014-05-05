@@ -1,0 +1,17 @@
+div class="container"
+  h1 Ranking of Actor
+  table class="table"
+    thead
+      tr
+        th #
+        th Name
+        th Programs
+  
+    tbody
+      - @ranks.each do |rank|
+        tr
+          td = rank[:count]
+          td = rank[:actor][:name]
+          td = rank[:actor].programs.take(3).collect{|c| c.title }.push('...').join(' / ')
+
+br

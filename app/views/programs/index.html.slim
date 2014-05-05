@@ -1,23 +1,22 @@
-h1 Listing programs
-
-table
-  thead
-    tr
-      th Title
-      th From
-      th
-      th
-      th
-
-  tbody
-    - @programs.each do |program|
+div class="container"
+  h1 Listing programs
+  table class="table"
+    thead
       tr
-        td = program.title
-        td = program.from
-        td = link_to 'Show', program
-        td = link_to 'Edit', edit_program_path(program)
-        td = link_to 'Destroy', program, data: {:confirm => 'Are you sure?'}, :method => :delete
+        th Title
+        th From
+        th
+        th
+        th
+    tbody
+      - @programs.each do |program|
+        tr
+          td = program.title
+          td = program.from
+          td = link_to 'Show', program
+          td = link_to 'Edit', edit_program_path(program)
+          td = link_to 'Destroy', program, data: {:confirm => 'Are you sure?'}, :method => :delete
 
-br
+  br
 
-= link_to 'New Program', new_program_path
+  = link_to 'New Program', new_program_path

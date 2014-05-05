@@ -1,1 +1,16 @@
-h2 ok
+div class="container"
+  h1 Search Result for Actor
+  table class="table"
+    tr
+      th id
+      th name
+      th birth
+      th programs
+      th #programs
+    - @actors.each do |actor|
+      tr
+        td = actor.id
+        td = actor.name
+        td = actor.birth
+        td = actor.programs.take(3).collect{|p| p.title }.join(' / ')
+        td = actor.programs.count
