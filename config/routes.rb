@@ -68,4 +68,5 @@ Rails.application.routes.draw do
 
   get "search/actor/:word" => "search#actor"
   get "search/program/:word" => "search#program"
+  get "search/character/:word" => "search#character"
 end
