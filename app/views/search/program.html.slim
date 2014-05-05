@@ -1,16 +1,21 @@
 div class="container"
   h1 Search Result for Program
-  table class="table"
-    tr
-      th id
-      th title
-      th from
-      th characters
-      th actors
-    - @programs.each do |program|
+  - if @programs == nil || @programs.size < 1 || @programs == [nil]
+    div class="alert alert-warning"
+      strong Sorry!
+      span No result.
+  - else
+    table class="table"
       tr
-        td = program.id
-        td = program.title
-        td = program.from
-        td = program.characters.take(3).collect{|c| c.name }.push('...').join(' / ')
-        td = program.actors.take(3).collect{|c| c.name }.push('...').join(' / ')
+        th id
+        th title
+        th from
+        th characters
+        th actors
+      - @programs.each do |program|
+        tr
+          td = program.id
+          td = program.title
+          td = program.from
+          td = program.characters.take(3).collect{|c| c.name }.push('...').join(' / ')
+          td = program.actors.take(3).collect{|c| c.name }.push('...').join(' / ')

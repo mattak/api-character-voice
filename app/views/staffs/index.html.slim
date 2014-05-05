@@ -1,23 +1,29 @@
 div class="container"
   h1 Listing staffs
-  table class="table"
-    thead
-      tr
-        th Name
-        th Role
-        th
-        th
-        th
 
-    tbody
-      - @staffs.each do |staff|
+  - if @staffs == nil || @staffs.size < 1
+    div class="alert alert-warning alert-dismissable"
+      strong oops!
+      span no result.
+  - else
+    table class="table"
+      thead
         tr
-          td = staff.name
-          td = staff.role
-          td = link_to 'Show', staff, class: 'btn btn-info'
-          td = link_to 'Edit', edit_staff_path(staff), class: 'btn btn-success'
-          td = link_to 'Destroy', staff, data: {:confirm => 'Are you sure?'}, :method => :delete, class: 'btn btn-warning'
+          th Name
+          th Role
+          th
+          th
+          th
+  
+      tbody
+        - @staffs.each do |staff|
+          tr
+            td = staff.name
+            td = staff.role
+            td = link_to 'Show', staff, class: 'btn btn-info'
+            td = link_to 'Edit', edit_staff_path(staff), class: 'btn btn-success'
+            td = link_to 'Destroy', staff, data: {:confirm => 'Are you sure?'}, :method => :delete, class: 'btn btn-warning'
 
-br
-
-= link_to 'New Staff', new_staff_path
+  br
+  
+  = link_to 'New Staff', new_staff_path

@@ -13,3 +13,14 @@
  *= require_tree .
  *= require_self
  */
+.alert {
+  span {
+    padding: 0px 6px;
+  }
+}
+
+div.container {
+    h1 {
+        margin-bottom: 24px;
+    }
+}

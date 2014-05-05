@@ -1,12 +1,17 @@
 div class="container"
   h1 Search Result for Character
-  table class="table"
-    tr
-      th id
-      th name
-      th actor name
-    - @characters.each do |character|
+  - if @characters == nil || @characters.size < 1 || @characters == [nil]
+    div class="alert alert-warning"
+      strong Sorry!
+      span No result.
+  - else
+    table class="table"
       tr
-        td = character.id
-        td = character.name
-        td = character.actor.name
+        th id
+        th name
+        th actor name
+      - @characters.each do |character|
+        tr
+          td = character.id
+          td = character.name
+          td = character.actor.name
