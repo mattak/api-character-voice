@@ -11,6 +11,6 @@ class SearchController < ApplicationController
 
   def character
     characters = Character.where('name like ?', "%#{ params[:word] }%")
-    @characters = (characters != nil) ? [ characters.first ] : []
+    @characters = (characters != nil) ? characters.to_a : []
   end
 end

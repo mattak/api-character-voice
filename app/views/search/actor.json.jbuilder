@@ -1,4 +1,4 @@
-if @programs == nil || @programs.size < 1 || @programs == [nil]
+if @actors == nil || @actors.size < 1 || @actors == [nil]
   json.array! []
 else
   json.array!(@actors) do |actor|
