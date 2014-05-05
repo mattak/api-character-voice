@@ -14,9 +14,9 @@ div class="container"
         tr
           td = staff.name
           td = staff.role
-          td = link_to 'Show', staff
-          td = link_to 'Edit', edit_staff_path(staff)
-          td = link_to 'Destroy', staff, data: {:confirm => 'Are you sure?'}, :method => :delete
+          td = link_to 'Show', staff, class: 'btn btn-info'
+          td = link_to 'Edit', edit_staff_path(staff), class: 'btn btn-success'
+          td = link_to 'Destroy', staff, data: {:confirm => 'Are you sure?'}, :method => :delete, class: 'btn btn-warning'
 
 br
 

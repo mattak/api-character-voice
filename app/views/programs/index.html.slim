@@ -13,9 +13,9 @@ div class="container"
         tr
           td = program.title
           td = program.from
-          td = link_to 'Show', program
-          td = link_to 'Edit', edit_program_path(program)
-          td = link_to 'Destroy', program, data: {:confirm => 'Are you sure?'}, :method => :delete
+          td = link_to 'Show', program, class: 'btn btn-info'
+          td = link_to 'Edit', edit_program_path(program), class: 'btn btn-success'
+          td = link_to 'Destroy', program, data: {:confirm => 'Are you sure?'}, :method => :delete, class: 'btn btn-warning'
 
   br
 
