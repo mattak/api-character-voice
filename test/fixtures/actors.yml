@@ -1,9 +1,9 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
-  name: MyString
+  name: actor1
   birth: 2014-04-27
 
 two:
-  name: MyString
+  name: actor2
   birth: 2014-04-27

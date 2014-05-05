@@ -3,9 +3,9 @@
 one:
   staff_id: 1
   program_id: 1
-  role: MyString
+  role: role1
 
 two:
   staff_id: 1
   program_id: 1
-  role: MyString
+  role: role2
