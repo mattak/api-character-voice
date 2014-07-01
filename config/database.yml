@@ -51,5 +51,5 @@ production:
   <<: *default
   database: character-voice_production
   username: character-voice
-  password: <%= ENV['CHARACTER-VOICE_DATABASE_PASSWORD'] %>
+  password: <%= ENV['CHARACTER_VOICE_DATABASE_PASSWORD'] %>
   socket: /var/run/mysqld/mysqld.sock
